@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 
 namespace TelegramBotRegisterWebHook.Controllers
 {
@@ -24,8 +23,13 @@ namespace TelegramBotRegisterWebHook.Controllers
         public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> Index([Microsoft.AspNetCore.Mvc.FromForm]
         TelegramBotRegisterWebHook.ViewModels.SetWebHookViewModel viewModel)
         {
-            string jsonResult =
-                await _httpClient.GetStringAsync($"https://api.telegram.org/bot{viewModel.Token}/setwebhook?url={viewModel.Url}");
+            System.Net.Http.HttpResponseMessage httpResponse =
+                await _httpClient.SendAsync(new System.Net.Http.HttpRequestMessage()
+                {
+                    Method = System.Net.Http.HttpMethod.Get,
+                    RequestUri = new System.Uri($"https://api.telegram.org/bot{viewModel.Token}/setwebhook?url={viewModel.Url}")
+                });
+            string jsonResult = await httpResponse.Content.ReadAsStringAsync();
             TelegramBotRegisterWebHook.Models.TelegramResultModel model =
                 Newtonsoft.Json.JsonConvert.DeserializeObject<TelegramBotRegisterWebHook.Models.TelegramResultModel>(jsonResult) ??
                 new Models.TelegramResultModel();
