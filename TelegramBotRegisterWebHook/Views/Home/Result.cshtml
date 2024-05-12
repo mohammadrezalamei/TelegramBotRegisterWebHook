@@ -1,0 +1,37 @@
+﻿@model TelegramBotRegisterWebHook.Models.TelegramResultModel
+@{
+    string statusText = 
+    Model.Ok ? "Ok!" : "Failed:(";
+    int statusCode =
+    Model.Ok ? 200 : Model.Error_code ?? 0;
+}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-12 col-xs-12">
+            @if (Model.Ok)
+            {
+                <div class="alert alert-success" role="alert">
+                    <strong>Success!</strong>
+                    <p>Operation completed successfully.</p>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-danger" role="alert">
+                    <strong>Failed:(</strong>
+                    <p>The operation failed.</p>
+                </div>
+            }
+        </div>
+        <div class="col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-12 col-xs-12">
+            <dl>
+                <dt>Status:</dt>
+                <dd>@statusText</dd>
+                <dt>description</dt>
+                <dd>@Model.Description</dd>
+                <dt>status code</dt>
+                <dd>@statusCode</dd>
+            </dl>
+        </div>
+    </div>
+</div>
