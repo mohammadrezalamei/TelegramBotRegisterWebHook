@@ -14,22 +14,22 @@ namespace TelegramBotRegisterWebHook.Controllers
         }
 
         [Microsoft.AspNetCore.Mvc.HttpGet]
-        public Microsoft.AspNetCore.Mvc.IActionResult Index()
+        public Microsoft.AspNetCore.Mvc.IActionResult Index(System.Threading.CancellationToken cancellationToken)
         {
             return View();
         }
 
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> Index([Microsoft.AspNetCore.Mvc.FromForm]
-        TelegramBotRegisterWebHook.ViewModels.SetWebHookViewModel viewModel)
+        TelegramBotRegisterWebHook.ViewModels.SetWebHookViewModel viewModel, System.Threading.CancellationToken cancellationToken)
         {
             System.Net.Http.HttpResponseMessage httpResponse =
                 await _httpClient.SendAsync(new System.Net.Http.HttpRequestMessage()
                 {
                     Method = System.Net.Http.HttpMethod.Get,
                     RequestUri = new System.Uri($"https://api.telegram.org/bot{viewModel.Token}/setwebhook?url={viewModel.Url}")
-                });
-            string jsonResult = await httpResponse.Content.ReadAsStringAsync();
+                }, cancellationToken);
+            string jsonResult = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
             TelegramBotRegisterWebHook.Models.TelegramResultModel model =
                 Newtonsoft.Json.JsonConvert.DeserializeObject<TelegramBotRegisterWebHook.Models.TelegramResultModel>(jsonResult) ??
                 new Models.TelegramResultModel();
