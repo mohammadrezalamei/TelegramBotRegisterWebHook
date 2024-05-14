@@ -9,6 +9,7 @@ namespace TelegramBotRegisterWebHook.Controllers
         {
             Microsoft.Extensions.DependencyInjection.IServiceScope serviceScope =
                 serviceProvider.CreateScope();
+
             _httpClient =
                 serviceScope.ServiceProvider.GetRequiredService<System.Net.Http.HttpClient>();
         }
@@ -23,16 +24,22 @@ namespace TelegramBotRegisterWebHook.Controllers
         public async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> Index([Microsoft.AspNetCore.Mvc.FromForm]
         TelegramBotRegisterWebHook.ViewModels.SetWebHookViewModel viewModel, System.Threading.CancellationToken cancellationToken)
         {
-            System.Net.Http.HttpResponseMessage httpResponse =
-                await _httpClient.SendAsync(new System.Net.Http.HttpRequestMessage()
+            System.Net.Http.HttpRequestMessage httpRequestMessage =
+                new System.Net.Http.HttpRequestMessage()
                 {
                     Method = System.Net.Http.HttpMethod.Get,
-                    RequestUri = new System.Uri($"https://api.telegram.org/bot{viewModel.Token}/setwebhook?url={viewModel.Url}")
-                }, cancellationToken);
-            string jsonResult = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
+                    RequestUri = new System.Uri(uriString: $"https://api.telegram.org/bot{viewModel.Token}/setwebhook?url={viewModel.Url}")
+                };
+
+            System.Net.Http.HttpResponseMessage httpResponse =
+                await _httpClient.SendAsync(request: httpRequestMessage, cancellationToken: cancellationToken);
+
+            string jsonResult = await httpResponse.Content.ReadAsStringAsync(cancellationToken: cancellationToken);
+
             TelegramBotRegisterWebHook.Models.TelegramResultModel model =
-                Newtonsoft.Json.JsonConvert.DeserializeObject<TelegramBotRegisterWebHook.Models.TelegramResultModel>(jsonResult) ??
+                Newtonsoft.Json.JsonConvert.DeserializeObject<TelegramBotRegisterWebHook.Models.TelegramResultModel>(value: jsonResult) ??
                 new Models.TelegramResultModel();
+
             return View("Result", model);
         }
     }
