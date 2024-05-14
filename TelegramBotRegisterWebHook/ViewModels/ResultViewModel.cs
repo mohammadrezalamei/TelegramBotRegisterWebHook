@@ -3,8 +3,9 @@
     public class ResultViewModel : System.Object
     {
         public ResultViewModel()
+            : base()
         {
-            
+
         }
     }
 }

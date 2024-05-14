@@ -3,6 +3,7 @@
     public class SetWebHookViewModel : System.Object
     {
         public SetWebHookViewModel()
+            : base()
         {
         }
 

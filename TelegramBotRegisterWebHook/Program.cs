@@ -6,6 +6,12 @@ namespace TelegramBotRegisterWebHook
 {
     public class Program : Object
     {
+        public Program()
+            : base()
+        {
+            
+        }
+
         public static void Main(string[] args)
         {
             var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);

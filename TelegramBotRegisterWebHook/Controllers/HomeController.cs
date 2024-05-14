@@ -6,6 +6,7 @@ namespace TelegramBotRegisterWebHook.Controllers
     {
         private readonly System.Net.Http.HttpClient _httpClient;
         public HomeController(System.IServiceProvider serviceProvider)
+            : base()
         {
             Microsoft.Extensions.DependencyInjection.IServiceScope serviceScope =
                 serviceProvider.CreateScope();
