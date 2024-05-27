@@ -26,7 +26,7 @@ namespace TelegramBotRegisterWebHook.Controllers
         TelegramBotRegisterWebHook.ViewModels.SetWebHookViewModel viewModel, System.Threading.CancellationToken cancellationToken)
         {
             System.Net.Http.HttpRequestMessage httpRequestMessage =
-                new System.Net.Http.HttpRequestMessage()
+                new()
                 {
                     Method = System.Net.Http.HttpMethod.Get,
                     RequestUri = new System.Uri(uriString: $"https://api.telegram.org/bot{viewModel.Token}/setwebhook?url={viewModel.Url}")
@@ -39,9 +39,9 @@ namespace TelegramBotRegisterWebHook.Controllers
 
             TelegramBotRegisterWebHook.Models.TelegramResultModel model =
                 Newtonsoft.Json.JsonConvert.DeserializeObject<TelegramBotRegisterWebHook.Models.TelegramResultModel>(value: jsonResult) ??
-                new Models.TelegramResultModel();
+                new();
 
-            return View("Result", model);
+            return View(viewName: "Result", model: model);
         }
     }
 }
